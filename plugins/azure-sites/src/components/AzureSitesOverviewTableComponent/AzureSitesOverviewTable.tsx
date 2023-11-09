@@ -44,6 +44,7 @@ import { useApi } from '@backstage/core-plugin-api';
 import { azureSiteApiRef } from '../../api';
 import { useEntity } from '@backstage/plugin-catalog-react';
 import { useEntityPermission } from '@backstage/plugin-catalog-react/alpha';
+import { stringifyEntityRef } from '@backstage/catalog-model';
 
 type States = 'Waiting' | 'Running' | 'Paused' | 'Failed' | 'Stopped';
 type Kinds = 'app' | 'functionapp';
@@ -110,6 +111,7 @@ const ActionButtons = ({
 }) => {
   const azureApi = useApi(azureSiteApiRef);
   const { entity } = useEntity();
+  const entityRef = stringifyEntityRef(entity);
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -125,7 +127,7 @@ const ActionButtons = ({
       name: value.name,
       resourceGroup: value.resourceGroup,
       subscription: value.subscription,
-      entity: entity,
+      entityRef: entityRef,
     });
     onMenuItemClick('Starting, this may take some time...');
     handleClose();
@@ -135,7 +137,7 @@ const ActionButtons = ({
       name: value.name,
       resourceGroup: value.resourceGroup,
       subscription: value.subscription,
-      entity: entity,
+      entityRef: entityRef,
     });
     onMenuItemClick('Stopping, this may take some time...');
     handleClose();
